@@ -2,659 +2,1025 @@
 <html>
 <head>
   <meta charset="utf-8">
+  
+
+  
   <title>MajicGao&#39;s Blog</title>
-  <meta name="keywords" content="">
-  <meta name="description" content="MajicGao&#39;s Blog">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="高内聚低耦合内聚：功能内聚&gt;顺序内聚&gt;通信内聚&gt;过程内聚&gt;时间内聚&gt;逻辑内聚&gt;偶然内聚 耦合：非直接耦合&gt;数据耦合&gt;标记耦合&gt;控制耦合&gt;外部耦合&gt;公共耦合&gt;内容耦合">
-<meta property="og:type" content="article">
-<meta property="og:title" content="软件工程(三)_总体设计_高内聚低耦合">
-<meta property="og:url" content="http://yoursite.com/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%B8%89)_%E6%80%BB%E4%BD%93%E8%AE%BE%E8%AE%A1_%E9%AB%98%E5%86%85%E8%81%9A%E4%BD%8E%E8%80%A6%E5%90%88/index.html">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="MajicGao&#39;s Blog">
+<meta property="og:url" content="http://yoursite.com/index.html">
 <meta property="og:site_name" content="MajicGao&#39;s Blog">
-<meta property="og:description" content="高内聚低耦合内聚：功能内聚&gt;顺序内聚&gt;通信内聚&gt;过程内聚&gt;时间内聚&gt;逻辑内聚&gt;偶然内聚 耦合：非直接耦合&gt;数据耦合&gt;标记耦合&gt;控制耦合&gt;外部耦合&gt;公共耦合&gt;内容耦合">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://raw.githubusercontent.com/MajicGao/BlogImg/master/blog-imgs/Software_Engineering/%E6%80%BB%E4%BD%93%E8%AE%BE%E8%AE%A1_%E5%86%85%E8%81%9A%E7%AD%89%E7%BA%A7.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/MajicGao/BlogImg/master/blog-imgs/Software_Engineering/%E6%80%BB%E4%BD%93%E8%AE%BE%E8%AE%A1_%E8%80%A6%E5%90%88%E7%AD%89%E7%BA%A7.png">
-<meta property="article:published_time" content="2020-06-19T15:57:00.000Z">
-<meta property="article:modified_time" content="2021-12-03T14:31:53.880Z">
 <meta property="article:author" content="MajicGao">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/MajicGao/BlogImg/master/blog-imgs/Software_Engineering/%E6%80%BB%E4%BD%93%E8%AE%BE%E8%AE%A1_%E5%86%85%E8%81%9A%E7%AD%89%E7%BA%A7.png">
-
-
-<link rel="icon" href="/img/Tree.pngg">
-
-<link href="/css/style.css?v=1.1.0" rel="stylesheet">
-
-<link href="/css/hl_theme/atom-light.css?v=1.1.0" rel="stylesheet">
-
-<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
-
-<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
-<script src="/js/titleTip.js?v=1.1.0" ></script>
-
-<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
-<script>
-    hljs.initHighlightingOnLoad();
-</script>
-
-<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
-
-
-
-<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
-
-<script src="/js/iconfont.js?v=1.1.0" ></script>
+  
+    <link rel="alternate" href="/atom.xml" title="MajicGao&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
 
 <meta name="generator" content="Hexo 4.2.0"></head>
-<div style="display: none">
-  <input class="theme_disqus_on" value="false">
-  <input class="theme_preload_comment" value="">
-  <input class="theme_blog_path" value="">
-  <input id="theme_shortcut" value="true" />
-  <input id="theme_highlight_on" value="true" />
-  <input id="theme_code_copy" value="true" />
-</div>
-
-
 
 <body>
-<aside class="nav mobile">
-    <div class="nav-left">
-        <a href="/"
-   class="avatar_target">
-    <img class="avatar"
-         src="/img/Tree.png"/>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">MajicGao&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-软件工程(三)_总体设计_高内聚低耦合" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%B8%89)_%E6%80%BB%E4%BD%93%E8%AE%BE%E8%AE%A1_%E9%AB%98%E5%86%85%E8%81%9A%E4%BD%8E%E8%80%A6%E5%90%88/" class="article-date">
+  <time datetime="2020-06-19T15:57:00.000Z" itemprop="datePublished">2020-06-19</time>
 </a>
-<div class="author">
-    <span>MajicGao</span>
-</div>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%B8%89)_%E6%80%BB%E4%BD%93%E8%AE%BE%E8%AE%A1_%E9%AB%98%E5%86%85%E8%81%9A%E4%BD%8E%E8%80%A6%E5%90%88/">软件工程(三)_总体设计_高内聚低耦合</a>
+    </h1>
+  
 
-<div class="icon">
+      </header>
     
-        
-            <a title="github"
-               href="https://github.com/yelog"
-               target="_blank">
-                
-                    <svg class="iconfont-svg" aria-hidden="true">
-                        <use xlink:href="#icon-github"></use>
-                    </svg>
-                
-            </a>
-        
-    
-        
-            <a title="email"
-               href="mailto:fgao3500@gmail.com"
-               target="_blank">
-                
-                    <svg class="iconfont-svg" aria-hidden="true">
-                        <use xlink:href="#icon-email"></use>
-                    </svg>
-                
-            </a>
-        
-    
-        
-            <a title="qq"
-               href="http://wpa.qq.com/msgrd?v=3&uin=1039932706&site=qq&menu=yes"
-               target="_blank">
-                
-                    <svg class="iconfont-svg" aria-hidden="true">
-                        <use xlink:href="#icon-qq"></use>
-                    </svg>
-                
-            </a>
-        
-    
-        
-            <a title="kugou"
-               href="https://www.kugou.com/"
-               target="_blank">
-                
-                    <svg class="iconfont-svg" aria-hidden="true">
-                        <use xlink:href="#icon-kugou"></use>
-                    </svg>
-                
-            </a>
-        
-    
-</div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <hr>
+<h3 id="高内聚低耦合"><a href="#高内聚低耦合" class="headerlink" title="高内聚低耦合"></a>高内聚低耦合</h3><p>内聚：功能内聚&gt;顺序内聚&gt;通信内聚&gt;过程内聚&gt;时间内聚&gt;逻辑内聚&gt;偶然内聚</p>
+<p>耦合：非直接耦合&gt;数据耦合&gt;标记耦合&gt;控制耦合&gt;外部耦合&gt;公共耦合&gt;内容耦合</p>
+<p><img src="https://raw.githubusercontent.com/MajicGao/BlogImg/master/blog-imgs/Software_Engineering/%E6%80%BB%E4%BD%93%E8%AE%BE%E8%AE%A1_%E5%86%85%E8%81%9A%E7%AD%89%E7%BA%A7.png" alt=""></p>
+<p><img src="https://raw.githubusercontent.com/MajicGao/BlogImg/master/blog-imgs/Software_Engineering/%E6%80%BB%E4%BD%93%E8%AE%BE%E8%AE%A1_%E8%80%A6%E5%90%88%E7%AD%89%E7%BA%A7.png" alt=""></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%B8%89)_%E6%80%BB%E4%BD%93%E8%AE%BE%E8%AE%A1_%E9%AB%98%E5%86%85%E8%81%9A%E4%BD%8E%E8%80%A6%E5%90%88/" data-id="ckbmfz62o000blgvff3s37chw" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
 
 
+  
+    <article id="post-软件工程(一)_概述" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%B8%80)_%E6%A6%82%E8%BF%B0/" class="article-date">
+  <time datetime="2020-06-19T15:57:00.000Z" itemprop="datePublished">2020-06-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a>
+  </div>
 
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%B8%80)_%E6%A6%82%E8%BF%B0/">软件工程(一)_概述</a>
+    </h1>
+  
 
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <hr>
+<h3 id="软件工程概述"><a href="#软件工程概述" class="headerlink" title="软件工程概述"></a>软件工程概述</h3><h4 id="软件"><a href="#软件" class="headerlink" title="软件"></a>软件</h4><p><strong>定义：</strong> 计算机程序、方法、规则、相关的文档资料以及计算机上运行程序时所必须的数据</p>
+<p>软件 = 程序 + 数据 + 文档</p>
+<h4 id="软件危机"><a href="#软件危机" class="headerlink" title="软件危机"></a>软件危机</h4><p><strong>定义：</strong> (IEEE)软件开发和维护过程中遇到的一系列问题，主要包括两个方面：如何开发软件，以满足对软件日益增长的需求；如何维护数量不断膨胀的有用软件</p>
+<p><strong>表现：</strong> 1. 开发成本和进度估计不准确  2. 开发产品与用户需求不匹配  3. 软件质量不行还不可维护  4. 软件没有适当的文档资料  5. 软件成本在整个计算机系统总成本比重上升  6. 开发速度跟不上需求速度 等</p>
+<p><strong>原因：</strong> 一方面与软件本身的特点有关，另一方面也与软件开发和维护方法不正确有关。  软件被发现错误后，维护时往往需要修改原本的设计   软件具有规模庞大的特点，对分工到组合、分析方法、设计方法、形式说明方法、版本控制等都需要可科学管理</p>
+<p>软件开发不是个体劳动，更多的时候是一种组织良好、管理严密、各类人员协同配合、共同完成的工程项目</p>
+<h4 id="软件工程"><a href="#软件工程" class="headerlink" title="软件工程"></a>软件工程</h4><p><strong>定义：</strong> (IEEE)1. 把系统的、规范的、可度量的途径应用于软件按开发、运行和维护过程，也就是把工程应用于软件；2. 研究1.中提到的途径</p>
+<p><strong>特征：</strong> 1. 软件工程关注于大型系统的构造    2. 软件工程的中心课题是控制复杂性（问题本身的复杂性和协调的复杂性）    3. 软件开发需要考虑更新维护的便捷性    4. 软件开发需要寻求开发和维护的更好更有效的方法和工具    5. 有效地协同合作    6. 软件需要有效地支持它的用户    7. 软件工程往往是跨领域跨文化背景地去创造产品</p>
+<p><strong>基本原理：</strong> 1. 用分阶段的生命周期规划管理(分周期，制计划)    2. 坚持进行阶段审评(防止错误滚雪球)    3. 严格实行产品控制(实行基准配置管理，不随意修改软件)    4. 采用现代程序设计技术   5. 结果应能清楚地审查(量化工作进展情况)    6. 开发小组的人员应该少而精    7. 不断改进软件工程实践(采纳新软件技术，不断总结经验，优化软件开发)</p>
+<h5 id="软件工程方法学"><a href="#软件工程方法学" class="headerlink" title="软件工程方法学"></a>软件工程方法学</h5><p>通常把软件生命周期全过程中使用的一整套技术方法的集合称为方法学，也称为泛型，软件工程方法学使用最广泛的是<strong>传统方法学</strong>和<strong>面向对象方法学</strong> </p>
+<p>软件工程方法学包含3个要素：方法、工具和过程。方法：完成软件开发的各项任务的技术方法    工具： 为运用方法而提供的自动的或半自动的<strong>软件工程支撑环境</strong>（软件开发各阶段使用的软件工具集合）    过程：获得高质量的软件所需要完成的一系列任务的框架</p>
 <ul>
-    <li>
-        <div class="all active" data-rel="All">All
-            
-                <small>(19)</small>
-            
-        </div>
-    </li>
-    
-        
-            
-                <li>
-                    <div data-rel="运维">
-                        
-                        运维
-                        <small>(4)</small>
-                        
-                    </div>
-                    
-                </li>
-            
-        
-    
-        
-            
-                <li>
-                    <div data-rel="Wikis">
-                        
-                        Wikis
-                        <small>(1)</small>
-                        
-                    </div>
-                    
-                </li>
-            
-        
-    
-        
-            
-                <li>
-                    <div data-rel="杂谈">
-                        
-                        杂谈
-                        <small>(1)</small>
-                        
-                    </div>
-                    
-                </li>
-            
-        
-    
-        
-            
-                <li>
-                    <div data-rel="软件工程">
-                        
-                        软件工程
-                        <small>(12)</small>
-                        
-                    </div>
-                    
-                </li>
-            
-        
-    
+<li><p>传统方法学</p>
+<p>自顶而下顺序开发；采用结构化技术(结构化分析、结构化设计和结构化实现)来完成软件开发的各项任务；面向行为或数据；前阶段是后阶段的前提和基础，后阶段是前阶段的具化和实现；</p>
+<p>问题抽象逻辑分析—&gt;分阶段顺序开发</p>
+</li>
+<li><p>面向对象方法学</p>
+<p>对象：静态属性 + 动态行为</p>
+<p>面向对象将数据和行为紧密结合，用对象分解取代传统方法的功能分解，需求不明确或有变化的开发适合这种面向对象方法学</p>
+<p>对象是相对独立的主体，容易重复使用</p>
+</li>
 </ul>
-<div class="left-bottom">
-    <div class="menus">
-        
-            
-            
-            
-    </div>
-    <div>
-        
-            <a class="about  site_url"
-               
-               href="/about">About</a>
-        
-        
-    </div>
-</div>
-<input type="hidden" id="yelog_site_posts_number" value="19">
+<h4 id="软件生命周期"><a href="#软件生命周期" class="headerlink" title="软件生命周期"></a>软件生命周期</h4><p><strong>定义：</strong> 软件产品或系统的一系列活动的全周期</p>
+<p><strong>内容：</strong></p>
+<ul>
+<li>软件定义时期<ul>
+<li>问题定义</li>
+<li>可行性分析</li>
+<li>需求分析</li>
+</ul>
+</li>
+<li>软件开发时期<ul>
+<li>系统设计<ul>
+<li>总体设计</li>
+<li>详细设计</li>
+</ul>
+</li>
+<li>系统实现<ul>
+<li>编码和单元测试：针对每个模块分工、编码和测试</li>
+<li>综合测试<ul>
+<li>组装测试</li>
+<li>验收测试</li>
+<li>评审交付</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>软件维护时期<ul>
+<li>改正性维护</li>
+<li>适应性维护</li>
+<li>完善性维护</li>
+<li>预防性维护</li>
+</ul>
+</li>
+</ul>
+<h4 id="软件过程"><a href="#软件过程" class="headerlink" title="软件过程"></a>软件过程</h4><p>软件生命周期中的一系列相关过程，完成一系列任务的框架和工作步骤，使用资源将输入转化为输出的活动所构成的系统</p>
+<p>过程 &gt; 活动 &gt; 任务</p>
+<p>软件过程 = 软件生命周期过程 != 软件开发过程</p>
+<h5 id="八种经典软件过程模型"><a href="#八种经典软件过程模型" class="headerlink" title="八种经典软件过程模型"></a>八种经典软件过程模型</h5><ul>
+<li><p><strong>瀑布模型</strong></p>
+<p>传统瀑布模型：</p>
+<p><img src="https://raw.githubusercontent.com/MajicGao/BlogImg/master/blog-imgs/Software_Engineering/%E4%BC%A0%E7%BB%9F%E7%80%91%E5%B8%83%E6%A8%A1%E5%9E%8B.png" alt="传统瀑布模型"></p>
+<p>实际瀑布模型：</p>
+<p><img src="https://raw.githubusercontent.com/MajicGao/BlogImg/master/blog-imgs/Software_Engineering/%E5%AE%9E%E9%99%85%E7%80%91%E5%B8%83%E6%A8%A1%E5%9E%8B.png" alt="实际瀑布模型"></p>
+<p>特点：</p>
+<ol>
+<li><p>阶段间具有顺序性和依耐性</p>
+</li>
+<li><p>推迟实现的观点，充分分析和设计</p>
+<p>前阶段过早的考虑进行程序实现，往往造成大量返工，有时甚至导致灾难性后果，瀑布模型再编码之前设置了系统分析和系统设计的个阶段</p>
+</li>
+<li><p>质量保证的观点，文档 + 阶段性审查</p>
+<p>软件工程的基本目标是优质、高产，阶段性评审以便尽早发现问题，纠正错误，防止雪球滚大，实际的瀑布模型是带反馈环的</p>
+</li>
+</ol>
+<p>优点：</p>
+<ol>
+<li>强迫开发人员使用规范的方法，如机构化技术</li>
+<li>严格规定了每个阶段必须提交的文档</li>
+<li>要求每个阶段交出的所有产品都必须经过质量保证小组的仔细检验</li>
+</ol>
+<p>瀑布模型基本上是一种文档驱动型的模型</p>
+<p>缺点：</p>
+<ol>
+<li>不能很好地挖掘用户的需求</li>
+</ol>
+</li>
+<li><p><strong>快速原型模型</strong></p>
+<p><img src="https://raw.githubusercontent.com/MajicGao/BlogImg/master/blog-imgs/Software_Engineering/%E5%BF%AB%E9%80%9F%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%9E%8B.png" alt="快速原型模型"></p>
+<p>快速建立原型供用户来完善需求</p>
+<p>第一步，快速建立一个能反映用户主要需求的原型系统，用户根据原型系统完善用户需求；第二步：开发人员根据用户确定的需求撰写规格说明文档，在根据这份文档开发软件</p>
+<p>软件产品的开发基本上是线性顺序开发的，原因如下：</p>
+<ol>
+<li>原型系统的每个功能都是用户认可的</li>
+<li>通过建立原型已经规避了很多错误</li>
+</ol>
+<p>快速原型的本质是“快速”。尽可能快地建造原型系统，以加速软件开发工程，节约软件开发成本。原型的用途是获得用户的真正需求，一旦需求确定，原型将抛弃，所以原型系统的内部结构并不重要，重要的是快速构建出原型供用户修改需求</p>
+</li>
+<li><p><strong>增量模型</strong></p>
+<p><img src="https://raw.githubusercontent.com/MajicGao/BlogImg/master/blog-imgs/Software_Engineering/%E5%A2%9E%E9%87%8F%E6%A8%A1%E5%9E%8B.png" alt="增量模型"></p>
+<p>并发的增量模型(风险更大)：</p>
+<p><img src="https://raw.githubusercontent.com/MajicGao/BlogImg/master/blog-imgs/Software_Engineering/%E5%B9%B6%E5%8F%91%E5%A2%9E%E9%87%8F%E6%A8%A1%E5%9E%8B.png" alt="并发的增量模型"></p>
+<p>增量模型也称为渐增模型</p>
+<p>使用增量模型开发软件时，把软件产品看作为一系列的增量构件来设计、编码、集成和测试。每个构件有多个相互作用的模块构成，并能够完成特定的功能</p>
+<p>把软件产品分解成一系列的增量构件时，应该是构件的规模大小适中，当把新构件集成到现有软件中时，所形成的产品必须是可测试的</p>
+<p>分批地逐步向用户提交产品，整个软件产品被分解成许多增量构件，开发人员一个构件一个构件地向用户提交产品</p>
+<p>优点：能再较短时间内向用户提交可完成部分工作的产品；逐步增加产品功能可以降低用户的学习使用软件的成本</p>
+<p>难点：把每个新的增量构件集成到现有软件体系结构中时，必须不破坏原本已开发出来的产品</p>
+<p>从某种意义上说，增量模型本身是自相矛盾的。它一方面要求开发人员把软件看作一个整体，另一方面又要求开发人员把软件看作构件序列，每个构件本质上都独立于另一个构件</p>
+</li>
+<li><p><strong>螺旋模型</strong></p>
+<p>简化的螺旋模型：</p>
+<p><img src="https://raw.githubusercontent.com/MajicGao/BlogImg/master/blog-imgs/Software_Engineering/%E7%AE%80%E5%8C%96%E7%9A%84%E8%9E%BA%E6%97%8B%E6%A8%A1%E5%9E%8B.png" alt="简化的螺旋模型"></p>
+<p>完整的螺旋模型：</p>
+<p><img src="https://raw.githubusercontent.com/MajicGao/BlogImg/master/blog-imgs/Software_Engineering/%E5%AE%8C%E6%95%B4%E7%9A%84%E8%9E%BA%E6%97%8B%E6%A8%A1%E5%9E%8B.png" alt="完整的螺旋模型"></p>
+<p>构件原型是一种能使某些类型的风险降至最低的方法，但对于某些类型的风险，原型方法也无能为力，如关键开发人员跳槽等</p>
+<p>螺旋模型的基本思想是，使用原型及其他方法来尽量降低风险，可把它看作在每个阶段之前都增加了风险分析过程的快速原型模型</p>
+<p>完整的螺旋模型中，螺旋线每个周期对应一个开发阶段</p>
+<p>优点：对可选方案和约束条件的强调有利于已有软件的重用，有助于包软件质量看作软件开发的重要目标； 减少了过多测试(浪费资金)和测试不足(产品故障多)所带来的风险；最重要的是，螺旋模型的维护只是模型的另一个周期，在维护和开发之间并没有本质的区别</p>
+<p>螺旋模型主要适用于内部开发的大规模软件项目，这样才能当风险过大时方便地终止项目</p>
+<p>螺旋模型是风险驱动的</p>
+</li>
+<li><p><strong>喷泉模型</strong></p>
+<p><img src="https://raw.githubusercontent.com/MajicGao/BlogImg/master/blog-imgs/Software_Engineering/%E5%96%B7%E6%B3%89%E6%A8%A1%E5%9E%8B.png" alt=""></p>
+<p>迭代是软件开发过程中普遍存在的一种内在属性，使用面向对象方法学开发软件时，工作重点应该放在生命周期中的分析阶段，喷泉模型是经典的面向对象的软件过程模型之一</p>
+<p>图中向下的箭头代表该阶段内的迭代，为了避免喷泉模型过于无序，应该把一个线性过程作为总目标，面向对象范型本身要求经常对开发活动进行迭代和求精</p>
+</li>
+<li><p><strong>Rational 统一过程(Ratuinal Unified Process, RUP)</strong></p>
+<p><img src="https://raw.githubusercontent.com/MajicGao/BlogImg/master/blog-imgs/Software_Engineering/RUP%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.png" alt="RUP软件开发生命周期"></p>
+<p>由Rational 软件公司提出的一种完整而且完美的软件过程</p>
+<p>初始阶段：建立业务模型，定义最终产品视图，确定项目范围</p>
+<p>精化阶段：设计并确定系统的体系结构，制定项目计划，确定资源需求</p>
+<p>构建阶段：开发构件，集成产品，测试功能</p>
+<p>移交阶段：把开发出的产品提交用户使用</p>
+<p>6条最佳实践经验：</p>
+<ol>
+<li><p>迭代式开发</p>
+<p>事实上，在整个软件开发过程中客户的需求会经常变化，迭代式开发允许在每次迭代过程中需求都可以变化，采用迭代式开发方法，每迭代过程以完成可执行版本结束，这不仅使最终用户可以不断介入和提反馈意见，而且开发人员也因随时有一个可交付的版本提高了士气</p>
+</li>
+<li><p>管理需求</p>
+<p>确定系统的需求，使用<strong>用例</strong>和脚本是捕获功能性需求的有效方法，RUP采用用例分析来捕获需求，并由它们驱动设计和实现</p>
+</li>
+<li><p>使用基于构件的体系结构</p>
+<p>所谓构件就是功能清晰的模块和子系统，RUP提供了使用现有的或新开的发的构件定义体系结构的系统化方法，从而有助于降低软件开发的复杂性，提高软件重用率</p>
+</li>
+<li><p>可视化建模(UML)</p>
+<p>所谓模型，就是为了理解事物而对事情作出的一种抽象，是对事物的一种无歧义的书面描述。RUP使用可视化建模语言UML建立软件系统的可视化模型，提高管理软件复杂性的能力</p>
+</li>
+<li><p>验证软件质量</p>
+<p>软件质量评估不再是事后型的或由单独小组进行的孤立活动，而是内建在贯穿于整个开发过程的、由全体成员参与的所有活动中</p>
+</li>
+<li><p>控制软件变更</p>
+<p>版本控制，有效地对软件修改进行控制、追踪和监控，以确保迭代开发的成功</p>
+</li>
+</ol>
+<p>RUP软件开发生命周期中，包含9个核心工作流，其中前6个为核心过程工作流程，后3个为核心支持工作流程，并把生命周期划分为4个阶段</p>
+<p>RUP强调采用迭代和渐增的方式开发软件，在每个阶段结束前有一个里程碑来评估该阶段的目标是否已经实现，如果评估结果令人满意，则可开始下一阶段的工作</p>
+</li>
+<li><p><strong>敏捷过程和极限编程</strong></p>
+<p>敏捷过程声明：</p>
+<ol>
+<li><p>个体和交互胜于过程和工具</p>
+<p>团队成员的合作、沟通以及交互能力要比单纯的软件编程能力更重要。首先应致力于构件软件开发团队(包括成员和交互方式)，然后再根据需求为团队配置项目环境(包括过程和工具)</p>
+</li>
+<li><p>可以工作的软件胜过面面俱到的文档</p>
+<p>软件开发的主要目标是向用户提供可以工作的软件而不是文档，但完全没有文档也是一种灾难</p>
+</li>
+<li><p>客户合作胜于合同谈判</p>
+<p>客户通常不可能做到一次性地将需求完整准确地表达在合同中，开发团队与客户密切和合作，能指导开发团队与客户协同工作的合同才是好合同</p>
+</li>
+<li><p>响应变化胜过遵循计划</p>
+<p>软件过程应该有足够的能力计时响应变化，但没有计划的项目也会陷入混乱而失败</p>
+</li>
+</ol>
+<p>这些声明只是对不同因素在保证软件开发成功方面所起到的大小做了比较，说一个因素更重要并不是说其他因素不重要，更不是说某个因素可以被其他因素所替代</p>
+<p>极限编程：</p>
+<p>极限编程(eXtreme Programming, XP)是敏捷过程的代表之一，其中极限二字是指将好的开发实践运用到极限</p>
+<p>极限编程广泛应用于需求模糊且经常变化的场景</p>
+<p>敏捷开发能够比较好的适应商业竞争环境下对小型项目提出的有限资源和有限时间的约束环境</p>
+</li>
+<li><p>微软过程</p>
+</li>
+</ul>
 
-<div style="display: none">
-    <span id="busuanzi_value_site_uv"></span>
-    <span id="busuanzi_value_site_pv"></span>
-</div>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%B8%80)_%E6%A6%82%E8%BF%B0/" data-id="ckbmfz62q000glgvfb30h0dh4" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
 
-    </div>
-    <div class="nav-right">
-        <div class="friends-area">
-    <div class="friends-title">
-        Links
-        <i class="iconfont icon-left"></i>
-    </div>
-    <div class="friends-content">
-        <ul>
-            
-            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
-            
-        </ul>
-    </div>
-</div>
-        <div class="title-list">
-    <div class="right-top">
-        <div id="default-panel">
-            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
-            <div class="right-title">All</div>
-            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
-        </div>
-        <div id="search-panel">
-            <i class="iconfont icon-left" data-title="返回"></i>
-            <input id="local-search-input" autocomplete="off"/>
-            <label class="border-line" for="input"></label>
-            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
-            <i class="iconfont icon-tag" data-title="标签"></i>
-        </div>
-        <div id="outline-panel" style="display: none">
-            <div class="right-title">大纲</div>
-            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
-        </div>
-    </div>
 
-    <div class="tags-list">
-    <input id="tag-search" />
-    <div class="tag-wrapper">
-        
-            <li class="article-tag-list-item">
-                <i class="iconfont icon-tag"></i><a>Blogs</a>
-            </li>
-        
-            <li class="article-tag-list-item">
-                <i class="iconfont icon-tag"></i><a>git</a>
-            </li>
-        
-            <li class="article-tag-list-item">
-                <i class="iconfont icon-tag"></i><a>Linux</a>
-            </li>
-        
-            <li class="article-tag-list-item">
-                <i class="iconfont icon-tag"></i><a>STAR法则</a>
-            </li>
-        
-            <li class="article-tag-list-item">
-                <i class="iconfont icon-tag"></i><a>虚拟机</a>
-            </li>
-        
-    </div>
-
-</div>
-
+  
+    <article id="post-软件工程(九)_详细设计_程序复杂程度的定量度量" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%B9%9D)_%E8%AF%A6%E7%BB%86%E8%AE%BE%E8%AE%A1_%E7%A8%8B%E5%BA%8F%E5%A4%8D%E6%9D%82%E7%A8%8B%E5%BA%A6%E7%9A%84%E5%AE%9A%E9%87%8F%E5%BA%A6%E9%87%8F/" class="article-date">
+  <time datetime="2020-06-19T15:57:00.000Z" itemprop="datePublished">2020-06-19</time>
+</a>
     
-    <nav id="title-list-nav">
-        
-        <a  class="All "
-           href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%B8%89)_%E6%80%BB%E4%BD%93%E8%AE%BE%E8%AE%A1_%E9%AB%98%E5%86%85%E8%81%9A%E4%BD%8E%E8%80%A6%E5%90%88/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="软件工程(三)_总体设计_高内聚低耦合">软件工程(三)_总体设计_高内聚低耦合</span>
-            <span class="post-date" title="2020-06-19 23:57:00">2020/06/19</span>
-        </a>
-        
-        <a  class="All 软件工程 "
-           href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%B8%80)_%E6%A6%82%E8%BF%B0/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="软件工程(一)_概述">软件工程(一)_概述</span>
-            <span class="post-date" title="2020-06-19 23:57:00">2020/06/19</span>
-        </a>
-        
-        <a  class="All 软件工程 "
-           href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%B9%9D)_%E8%AF%A6%E7%BB%86%E8%AE%BE%E8%AE%A1_%E7%A8%8B%E5%BA%8F%E5%A4%8D%E6%9D%82%E7%A8%8B%E5%BA%A6%E7%9A%84%E5%AE%9A%E9%87%8F%E5%BA%A6%E9%87%8F/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="软件工程(九)_详细设计_程序复杂程度的定量度量">软件工程(九)_详细设计_程序复杂程度的定量度量</span>
-            <span class="post-date" title="2020-06-19 23:57:00">2020/06/19</span>
-        </a>
-        
-        <a  class="All 软件工程 "
-           href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%BA%8C)_%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="软件工程(二)_需求分析">软件工程(二)_需求分析</span>
-            <span class="post-date" title="2020-06-19 23:57:00">2020/06/19</span>
-        </a>
-        
-        <a  class="All 软件工程 "
-           href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%B8%83)_%E8%AF%A6%E7%BB%86%E8%AE%BE%E8%AE%A1_Jackson%E6%96%B9%E6%B3%95/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="软件工程(七)_详细设计_Jackson方法">软件工程(七)_详细设计_Jackson方法</span>
-            <span class="post-date" title="2020-06-19 23:57:00">2020/06/19</span>
-        </a>
-        
-        <a  class="All 软件工程 "
-           href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E5%8D%81)_%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="软件工程(十)_软件测试">软件工程(十)_软件测试</span>
-            <span class="post-date" title="2020-06-19 23:57:00">2020/06/19</span>
-        </a>
-        
-        <a  class="All 软件工程 "
-           href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E5%8D%81%E4%B8%80)_%E8%BD%AF%E4%BB%B6%E7%BB%B4%E6%8A%A4/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="软件工程(十一)_软件维护">软件工程(十一)_软件维护</span>
-            <span class="post-date" title="2020-06-19 23:57:00">2020/06/19</span>
-        </a>
-        
-        <a  class="All 软件工程 "
-           href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E5%8D%81%E4%BA%8C)_%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%96%B9%E6%B3%95%E5%AD%A6/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="软件工程(十二)_面向对象的方法学">软件工程(十二)_面向对象的方法学</span>
-            <span class="post-date" title="2020-06-19 23:57:00">2020/06/19</span>
-        </a>
-        
-        <a  class="All 软件工程 "
-           href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E5%85%AD)_%E8%AF%A6%E7%BB%86%E8%AE%BE%E8%AE%A1_%E7%BB%93%E6%9E%84%E5%8C%96%E7%A8%8B%E5%BA%8F/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="软件工程(六)_详细设计_结构化程序">软件工程(六)_详细设计_结构化程序</span>
-            <span class="post-date" title="2020-06-19 23:57:00">2020/06/19</span>
-        </a>
-        
-        <a  class="All 软件工程 "
-           href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%BA%94)_%E6%80%BB%E4%BD%93%E8%AE%BE%E8%AE%A1_%E5%90%AF%E5%8F%91%E5%BC%8F%E8%A7%84%E5%88%99/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="软件工程(五)_总体设计_启发式规则">软件工程(五)_总体设计_启发式规则</span>
-            <span class="post-date" title="2020-06-19 23:57:00">2020/06/19</span>
-        </a>
-        
-        <a  class="All 软件工程 "
-           href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E6%80%BB)_%E4%BC%A0%E7%BB%9F%E6%96%B9%E6%B3%95%E5%AD%A6%E7%9A%84%E5%9B%BE/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="软件工程(总)_传统方法学的图">软件工程(总)_传统方法学的图</span>
-            <span class="post-date" title="2020-06-19 23:57:00">2020/06/19</span>
-        </a>
-        
-        <a  class="All 软件工程 "
-           href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E5%9B%9B)_%E6%80%BB%E4%BD%93%E8%AE%BE%E8%AE%A1_%E9%9D%A2%E5%90%91%E6%95%B0%E6%8D%AE%E6%B5%81%E7%9A%84%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="软件工程(四)_总体设计_面向数据流的分析方法">软件工程(四)_总体设计_面向数据流的分析方法</span>
-            <span class="post-date" title="2020-06-19 23:57:00">2020/06/19</span>
-        </a>
-        
-        <a  class="All 软件工程 "
-           href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E6%80%BB)_%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E6%96%B9%E6%B3%95%E5%AD%A6%E7%9A%84%E5%9B%BE/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="软件工程(总)_面向对象方法学的图">软件工程(总)_面向对象方法学的图</span>
-            <span class="post-date" title="2020-06-19 23:57:00">2020/06/19</span>
-        </a>
-        
-        <a  class="All Wikis "
-           href="/2020/04/11/STAR%E6%B3%95%E5%88%99/"
-           data-tag="STAR法则"
-           data-author="" >
-            <span class="post-title" title="STAR法则">STAR法则</span>
-            <span class="post-date" title="2020-04-11 13:59:00">2020/04/11</span>
-        </a>
-        
-        <a  class="All 运维 "
-           href="/2020/04/06/Git%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/"
-           data-tag="git"
-           data-author="" >
-            <span class="post-title" title="Git简单使用">Git简单使用</span>
-            <span class="post-date" title="2020-04-06 11:45:00">2020/04/06</span>
-        </a>
-        
-        <a  class="All 杂谈 "
-           href="/2020/04/06/hexo+GitHub%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"
-           data-tag="Blogs"
-           data-author="" >
-            <span class="post-title" title="hexo+GitHub搭建个人博客">hexo+GitHub搭建个人博客</span>
-            <span class="post-date" title="2020-04-06 11:45:00">2020/04/06</span>
-        </a>
-        
-        <a  class="All 运维 "
-           href="/2020/04/06/git%20clone%E9%A1%B9%E7%9B%AE%E6%97%B6%E9%81%87%E8%A7%81git@github.com%20Permission%20denied%20(publickey)/"
-           data-tag="git"
-           data-author="" >
-            <span class="post-title" title="git clone项目时遇见git@github.com Permission denied (publickey)">git clone项目时遇见git@github.com Permission denied (publickey)</span>
-            <span class="post-date" title="2020-04-06 11:45:00">2020/04/06</span>
-        </a>
-        
-        <a  class="All 运维 "
-           href="/2019/04/07/Linux%20Tips/"
-           data-tag="Linux"
-           data-author="" >
-            <span class="post-title" title="Linux Tips">Linux Tips</span>
-            <span class="post-date" title="2019-04-07 11:45:00">2019/04/07</span>
-        </a>
-        
-        <a  class="All 运维 "
-           href="/2019/04/06/%E8%99%9A%E6%8B%9F%E6%9C%BA%20Tips/"
-           data-tag="虚拟机"
-           data-author="" >
-            <span class="post-title" title="虚拟机 Tips">虚拟机 Tips</span>
-            <span class="post-date" title="2019-04-06 11:45:00">2019/04/06</span>
-        </a>
-        
-        <div id="no-item-tips">
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a>
+  </div>
 
-        </div>
-    </nav>
-    <div id="outline-list">
-    </div>
-</div>
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%B9%9D)_%E8%AF%A6%E7%BB%86%E8%AE%BE%E8%AE%A1_%E7%A8%8B%E5%BA%8F%E5%A4%8D%E6%9D%82%E7%A8%8B%E5%BA%A6%E7%9A%84%E5%AE%9A%E9%87%8F%E5%BA%A6%E9%87%8F/">软件工程(九)_详细设计_程序复杂程度的定量度量</a>
+    </h1>
+  
 
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <hr>
+<h3 id="程序复杂程度的定量度量"><a href="#程序复杂程度的定量度量" class="headerlink" title="程序复杂程度的定量度量"></a>程序复杂程度的定量度量</h3><p>把程序的复杂程度乘以适当的常数即可估计出软件中错误的数量以及软件开发所需要的工作量；定量度量的结果可以比较两个不同设计或算法的优劣；可以作为模块规模的精确限度</p>
+<ul>
+<li>McCabe 方法</li>
+</ul>
+<ul>
+<li>Halstead 方法</li>
+</ul>
+
+      
     </div>
-    <div class="hide-list">
-        <div class="semicircle" data-title="切换全屏 快捷键 s">
-            <div class="brackets first"><</div>
-            <div class="brackets">&gt;</div>
-        </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%B9%9D)_%E8%AF%A6%E7%BB%86%E8%AE%BE%E8%AE%A1_%E7%A8%8B%E5%BA%8F%E5%A4%8D%E6%9D%82%E7%A8%8B%E5%BA%A6%E7%9A%84%E5%AE%9A%E9%87%8F%E5%BA%A6%E9%87%8F/" data-id="ckbmfz62r000jlgvfelhjc47n" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-软件工程(二)_需求分析" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%BA%8C)_%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/" class="article-date">
+  <time datetime="2020-06-19T15:57:00.000Z" itemprop="datePublished">2020-06-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%BA%8C)_%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/">软件工程(二)_需求分析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <hr>
+<h3 id="需求分析"><a href="#需求分析" class="headerlink" title="需求分析"></a>需求分析</h3><p>根据结构化分析原则，需求分析需要建立3种模型：<strong>数据模型</strong>(实体-联系图)、<strong>功能模型</strong>(数据流图)和<strong>行为模型</strong>(状态转换图)</p>
+
+      
     </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%BA%8C)_%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/" data-id="ckbmfz62t000nlgvfhig7gwba" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-软件工程(七)_详细设计_Jackson方法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%B8%83)_%E8%AF%A6%E7%BB%86%E8%AE%BE%E8%AE%A1_Jackson%E6%96%B9%E6%B3%95/" class="article-date">
+  <time datetime="2020-06-19T15:57:00.000Z" itemprop="datePublished">2020-06-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%B8%83)_%E8%AF%A6%E7%BB%86%E8%AE%BE%E8%AE%A1_Jackson%E6%96%B9%E6%B3%95/">软件工程(七)_详细设计_Jackson方法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <hr>
+<h3 id="Jackson-方法"><a href="#Jackson-方法" class="headerlink" title="Jackson 方法"></a>Jackson 方法</h3><p>Jackson 方法定义了一组以数据结构为指导的映射</p>
+<p>Jackson 认为数据结构的元素之间只有三种逻辑关系：顺序、选择和重复，三种数据结构可以任意嵌套、组合形成复杂的体系结构。</p>
+<p>Jackson 方法从目标系统的输入、输出数据结构入手，映射出程序框架结构，再补充其他细节，就可以得到完整的描述程序结构的Jackson 图，Jackson 图关注的是数据的逻辑结构，而不关心数据的具体存在形式</p>
+<h4 id="Jackson-分析方法"><a href="#Jackson-分析方法" class="headerlink" title="Jackson 分析方法"></a>Jackson 分析方法</h4><p>面向数据流的分析方法</p>
+<p>主要思路：通过对要处理的复杂数据，绘制Jackson 图进行分析，再结合Jackson 图来描述复杂数据的数据结构，分析数据的内在逻辑</p>
+<h4 id="Jackson-设计方法"><a href="#Jackson-设计方法" class="headerlink" title="Jackson 设计方法"></a>Jackson 设计方法</h4><p>面向数据结构的设计方法</p>
+<p>Jackson 结构程序设计方法步骤：</p>
+<ol>
+<li>分析并确定输入输出数据的逻辑结构，并用Jackson 图描绘这些数据结构</li>
+<li>找出输入数据结构和输出数据结构中由对应关系的数据单元</li>
+<li>按一定规则由输入输出的数据结构导出程序结构</li>
+<li>列出所有操作与条件(包括分支条件和循环结束条件)，并把它们分配到程序结构图中对应的位置</li>
+<li>用伪码写出程序</li>
+</ol>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p>[1] <a href="https://blog.csdn.net/lizhenyuan/article/details/4090104" target="_blank" rel="noopener">https://blog.csdn.net/lizhenyuan/article/details/4090104</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%B8%83)_%E8%AF%A6%E7%BB%86%E8%AE%BE%E8%AE%A1_Jackson%E6%96%B9%E6%B3%95/" data-id="ckbmfz62t000qlgvfb2446oe9" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-软件工程(十)_软件测试" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E5%8D%81)_%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/" class="article-date">
+  <time datetime="2020-06-19T15:57:00.000Z" itemprop="datePublished">2020-06-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E5%8D%81)_%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/">软件工程(十)_软件测试</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <hr>
+<h3 id="软件测试基础"><a href="#软件测试基础" class="headerlink" title="软件测试基础"></a>软件测试基础</h3><p>在测试阶段测试人员努力设计出一系列测试案例，目的是”破坏”已建好的系统，竭力证明程序中有错误，不能按照预定要求正常工作</p>
+<p>测试阶段的根本目的是尽可能多地发现并排除软件中潜在的错误，最终把高质量的软件系统交给用户使用</p>
+<p>测试准则：</p>
+<ol>
+<li>所有测试都应该能追溯到用户需求</li>
+<li>应该远在测试开始之前就制定出测试计划</li>
+<li>把Pareto原理应用到软件测试中，Pareto原理说明，测试发现的错误中80%很可能是由程序中的20%的模块引起的</li>
+<li>应该从小规模测试开始，再逐步进行大规模测试</li>
+<li>穷举测试是不可能的，测试只能证明程序中存在错误，不能证明程序中没有错误</li>
+<li>为了达到最佳的测试效果，应该有独立的第三方从事测试工作</li>
+</ol>
+<h4 id="测试方法"><a href="#测试方法" class="headerlink" title="测试方法"></a>测试方法</h4><p>黑盒测试：把程序看作一个黑盒子，步烤炉程序的内部结构和处理过程；黑盒测试是在程序接口进行测试，只检测是否符合规格说明书；黑盒测试又称功能测试</p>
+<p>白盒测试：把程序看作装在一个透明的白盒子里，测试程序内部的主要执行通路是否按要求正常工作；白盒测试也称结构测试</p>
+<h4 id="测试步骤"><a href="#测试步骤" class="headerlink" title="测试步骤"></a>测试步骤</h4><ol>
+<li><p>模块测试</p>
+<p>模块测试的目的是保证每个模块作为一个单元能正常工作，模块测试也称单元测试，这个测试往往发现的是编码和详细设计阶段的错误</p>
+</li>
+<li><p>子系统测试</p>
+<p>把单元测试通过的模块组装成子系统，检测模块间是否能够正常通信和协调，这个步骤主要是测试模块的接口</p>
+</li>
+<li><p>系统测试</p>
+<p>把测试通过的子系统装配成一个完整的系统来测试，确定系统能够实现需求说明书上指定的功能，并且动态特征符合预定要求；子系统测试和系统测试通常都成为集成测试</p>
+</li>
+<li><p>验收测试</p>
+<p>在用户的参与下，测试整个系统，确定系统功能符合用户的需求；验收测试也称确认测试</p>
+</li>
+<li><p>平行运行</p>
+<p>新旧系统平行运行一段时间，防止新系统有未检测到的错误</p>
+</li>
+</ol>
+<h4 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h4><p>测试重点：模块接口、局部数据结构、重要的执行通路、出错处理通路、边界条件</p>
+<p>代码审查：由审查小组(组长、设计者、编写者、测试者)进行代码审查</p>
+<p>用计算机的测试方法发现错误之后，通常需要先改正错误之后才能进行后续的继续测试工作；模块内聚程度高可以简化单元测试过程</p>
+<h4 id="集成测试"><a href="#集成测试" class="headerlink" title="集成测试"></a>集成测试</h4><p>集成测试的方式有两种：非渐增式测试和渐增式测试</p>
+<p>非渐增式测试：先分别测试每个模块，再将所有模块集成起来再测试整个系统，即一次性集成</p>
+<p>渐增式测试：每测试完一个模块之后就将该模块集成到系统中，并对系统进行测试，逐步集成</p>
+<h4 id="确认测试"><a href="#确认测试" class="headerlink" title="确认测试"></a>确认测试</h4><p>确认测试也称验收测试，验证软件的有效性</p>
+<p>确认测试必须用户积极参与，确认测试通常进行黑盒测试</p>
+<p>确认测试的一个重要内容是复查软件配置，保证软件配置的所有成分都齐全，质量符合要求，文档与程序完全一致具有完成软件维护所必须的细节，并且已经编好目录</p>
+<p>Alpha测试：由用户在开发者的场所进行</p>
+<p>Beta测试：由软件的最终用户在一个或多个客户场所进行，通常开发人员不在测试现场</p>
+<h4 id="白盒测试技术"><a href="#白盒测试技术" class="headerlink" title="白盒测试技术"></a>白盒测试技术</h4><p>设计测试用例(测试数据+预期的输出结果)是测试阶段的关键技术问题</p>
+<p>白盒测试的方法很多，主要介绍<strong>逻辑覆盖</strong>和<strong>控制结构测试</strong></p>
+<p><strong>逻辑覆盖：</strong></p>
+<ul>
+<li><p>语句覆盖</p>
+<p>每条语句都至少执行一遍，语句覆盖是很弱的逻辑覆盖标准</p>
+</li>
+<li><p>判断覆盖</p>
+<p>每条语句都至少执行一遍，并且每个判断的每一种可能都至少执行一次，注重整个判断的真或假；比语句覆盖强，但仍很弱</p>
+</li>
+<li><p>条件覆盖</p>
+<p>语句覆盖基础上，判断表达式中的每一个条件的每种情况都要取一遍，注重每个条件的真或假；条件覆盖不包含于判断覆盖，判断覆盖也不一定包含于条件判断</p>
+</li>
+<li><p>判断/条件覆盖</p>
+<p>判断表达式中的每个条件都取到各种情况的值，每个判断表达式也都取到各种可能结果</p>
+</li>
+<li><p>条件组合覆盖</p>
+<p>要求选取足够多的测试数据，使得每个判断表达式中的判断条件的各种组合都至少出现一次，注重判断式内部的条件的组合，不是全部判断式条件的组合；条件组合覆盖一定满足判断覆盖、条件覆盖和判断/条件覆盖；条件组合覆盖并不是使程序中的每一条途径都执行到</p>
+</li>
+<li><p>点覆盖</p>
+<p>选取足够多的测试数据，使得程序的执行路径至少经过流图的每一结点一次；标准和语句覆盖相同</p>
+</li>
+<li><p>边覆盖</p>
+<p>使得程序执行路径至少经过流图的每个边一次；通常和判断覆盖一致(判断式只有一个判断条件时一致，多个时不一致)</p>
+</li>
+<li><p>路径覆盖</p>
+<p>使得程序的每条可能的执行路径至少执行一次</p>
+</li>
+</ul>
+<p>覆盖标准之间的关系：</p>
+<p><img src="https://raw.githubusercontent.com/MajicGao/BlogImg/master/blog-imgs/Software_Engineering/%E6%B5%8B%E8%AF%95_%E8%A6%86%E7%9B%96%E6%A0%87%E5%87%86%E9%97%B4%E5%85%B3%E7%B3%BB%E5%9B%BE.png" alt=""></p>
+<p><strong>控制结构测试：</strong></p>
+<ul>
+<li><p>基本路径测试</p>
+<p>步骤：</p>
+<ol>
+<li><p>根据程序设计结构画出相应的流图</p>
+</li>
+<li><p>计算流图的环形复杂度</p>
+</li>
+<li><p>确定线性独立路径的基本集合</p>
+<p>独立路径是指至少引入程序的一个新的处理语句集合或是一个新的条件的路径，流图中即是至少有条新边</p>
+</li>
+<li><p>设计强制执行基本集合中每条路径的测试用例，且每个条件在执行的时候都分别取真、假</p>
+</li>
+</ol>
+</li>
+<li><p>条件测试</p>
+</li>
+<li><p>循环测试</p>
+<p>专注于测试循环结构的有效性，循环结构分三种：简单循环、串接循环和嵌套循环</p>
+</li>
+</ul>
+<h4 id="黑盒测试技术"><a href="#黑盒测试技术" class="headerlink" title="黑盒测试技术"></a>黑盒测试技术</h4><p>常见错误：</p>
+<ol>
+<li>功能不正确或遗漏</li>
+<li>界面错误</li>
+<li>数据结构错误或外部数据库访问错误</li>
+<li>性能错误</li>
+<li>初始化或终止错误</li>
+</ol>
+<p>黑盒测试技术很多，主要介绍<strong>等价划分</strong>、<strong>边界值分析</strong>和<strong>错误推断</strong></p>
+<p><strong>等价划分：</strong></p>
+<p>有效等价类：对于程序规格说明合理的有意义的输入数据构成的集合</p>
+<p>无效等价类：与有效等价类定义相反定义</p>
+<p>设计测试用例之前，先根据程序的功能说明，将输入数据划分为有效等价类和无效等价类</p>
+<p>等价类划分的启发式规则：</p>
+<ol>
+<li>规定输入值范围时，划分一个有效等价类(范围内)，两个无效等价类(范围外的两端)</li>
+<li>规定输入数据个数时，划分一个有效等价类(符合个数)，两个无效等价类(多余要求个数和少于要求个数)</li>
+<li>规定输入一组值，且程序对输入值做不同处理时，每个处理允许输入数据是一个有效等价类，任一无效输入值都属于一个无效等价类，即多个有效等价类，一个无效等价类</li>
+<li>规定输入数据不许遵守一定规则时，遵守规则的输入数据是一个有效等价类，和若干无效等价类(从不同违反角度划分)</li>
+<li>规定输入数据为整数时，划分一个无效等价类，和正整数、零、负整数三个有效等价类</li>
+</ol>
+<p>启发式规则很多，主要是凭着感觉走</p>
+<p>每设计一个测试用例都必须包含一个新的等价类，直到所有等价类都覆盖到后，设计的测试用例才算完整</p>
+<p>设计有效测试用例时，使其尽可能多的覆盖尚未覆盖的有效等价类，直到有效等价类覆盖完，一般只用一个测试用例</p>
+<p>设计无效测试用例时，每次只覆盖一个无效等价类，直到无效等价类覆盖完，一般有多少个无效等价类就至少有多少个无效测试用例</p>
+<p><strong>边界值分析：</strong></p>
+<p>定义：</p>
+<p>边界值分析法就是对输入或输出的边界值进行测试的一种黑盒测试方法。通常边界值分析法是作为对等价类划分法的补充，这种情况下，其测试用例来自等价类的边界</p>
+<p>常见的边界值：</p>
+<p>16bit：-32768~32767；</p>
+<p>32bit：-65536~65535;</p>
+<p>数组元素的第一个和最后一个；</p>
+<p>循环的第0次、第1次和倒数第2次、最后一次</p>
+<p><strong>错误推断：</strong></p>
+<p>基本思想：列举出程序中所有可能的错误和容易发生错误的特殊情况，更具它们选择测试用例</p>
+<h4 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h4><p>调试是在测试结束发现错误之后排除错误的过程</p>
+<p>工作：确定程序中的可以错误的确切性质和位置，对程序(设计、编码)进行修改，排除这个错误</p>
+<p>调试途径：蛮干法、回溯法、原因排除法(对分查找法、归纳法和演绎法)</p>
+<p>调试过程：</p>
+<ol>
+<li>从错误的外部表现形式入手，确定程序中的出错位置</li>
+<li>研究相关程序，找出错误的内在原因</li>
+<li>修改设计和代码，排除这个错误</li>
+<li>重复进行暴露这个错误的原始促使和某些相关测试</li>
+</ol>
+<p>注意事项：</p>
+<ol>
+<li>有头脑去分析思考与错误相关的信息而不是用脚趾头</li>
+<li>调试工具只是工具，可以用但不能依赖</li>
+<li>试探法是下下策</li>
+<li>不要改一个Bug出现两个Bugs</li>
+</ol>
+<h4 id="软件可靠性"><a href="#软件可靠性" class="headerlink" title="软件可靠性"></a>软件可靠性</h4><p>软件可靠性：在给定的时间间隔内，按照规格说明书的规定成功地运行的概率</p>
+<p>软件可使用性：程序在给定的时间点，按照规格说明书的规定，成功运行的概率</p>
+<p>IEEE给出的<strong>错误</strong>的含义：由开发人员造成的软件差错(bug)</p>
+<p>IEEE给出的<strong>故障</strong>的含义：由错误引发的软件的不正确的行为</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E5%8D%81)_%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/" data-id="ckbmfz62v000ulgvf42kfeg6p" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-软件工程(十一)_软件维护" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E5%8D%81%E4%B8%80)_%E8%BD%AF%E4%BB%B6%E7%BB%B4%E6%8A%A4/" class="article-date">
+  <time datetime="2020-06-19T15:57:00.000Z" itemprop="datePublished">2020-06-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E5%8D%81%E4%B8%80)_%E8%BD%AF%E4%BB%B6%E7%BB%B4%E6%8A%A4/">软件工程(十一)_软件维护</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <hr>
+<h3 id="软件维护"><a href="#软件维护" class="headerlink" title="软件维护"></a>软件维护</h3><p>根据维护原因将软件维护分为四大类：完善性维护、纠错/改正性维护、适应性维护、预防性维护</p>
+<ul>
+<li><p>完善性维护(50%)</p>
+<p>在软件使用过程中，用户往往会对软件提出新的功能要求与性能要求，为满足这些新的要求，扩充软件原有的功能、改善性能而进行的软件维护活动称为完善性维护</p>
+</li>
+<li><p>改正性维护(21%)</p>
+<p>在软件测试过程中，没有发现的错误，带到维护阶段，这些隐含的错误在某些特定的环境下会暴露出来。为识别和纠正这些错误，修改软件性能上的缺陷，进行的确定和修改错误的过程称为改正性维护</p>
+</li>
+<li><p>适应性维护(25%)</p>
+<p>随着计算机的发展，计算机硬件和软件环境、数据环境都在不断地发生变化，为使软件适应这种变化而进行的软件修改过程称为适应性维护</p>
+</li>
+<li><p>预防性维护</p>
+<p>为提高软件的可维护性和可靠性，为以后进一步改进软件奠定良好基础而对软件进行的修改称为预防性维护</p>
+</li>
+</ul>
+<p>结构化维护和非结构化维护区别：</p>
+<p><img src="https://raw.githubusercontent.com/MajicGao/BlogImg/master/blog-imgs/Software_Engineering/%E7%BB%B4%E6%8A%A4_%E7%BB%93%E6%9E%84%E5%8C%96%E7%BB%B4%E6%8A%A4%E4%B8%8E%E9%9D%9E%E7%BB%93%E6%9E%84%E5%8C%96%E7%BB%B4%E6%8A%A4%E5%8C%BA%E5%88%AB.png" alt=""></p>
+<p>维护工作量的一个模型：<br>M＝P十K×e^(c－d)^<br>       M是维护工作总量<br>       P是生产性工作量<br>       K是经验常数<br>       c是软件复杂程度(非结构化设计和缺少文档都会增加软件的复杂程度)<br>      d是维护人员对软件的熟悉程度</p>
+<p>可维护性度量：可理解性、可靠性、可测试性、可修改性、可移植性、可重用性和执行效率</p>
+<p>文档分为用户文档(描述功能和使用方法的)和系统文档(描述除软件本身外的软件工程相关文档)</p>
+<p>可维护性复审：保证软件配置的完成性、一致性(可能就修改了代码而没有修改文档)和可理解性，从软件维护的角度</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E5%8D%81%E4%B8%80)_%E8%BD%AF%E4%BB%B6%E7%BB%B4%E6%8A%A4/" data-id="ckbmfz62w000wlgvf780c0jio" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-软件工程(十二)_面向对象的方法学" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E5%8D%81%E4%BA%8C)_%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%96%B9%E6%B3%95%E5%AD%A6/" class="article-date">
+  <time datetime="2020-06-19T15:57:00.000Z" itemprop="datePublished">2020-06-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E5%8D%81%E4%BA%8C)_%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%96%B9%E6%B3%95%E5%AD%A6/">软件工程(十二)_面向对象的方法学</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <hr>
+<h3 id="面向对象开发过程"><a href="#面向对象开发过程" class="headerlink" title="面向对象开发过程"></a>面向对象开发过程</h3><h4 id="面向对象分析"><a href="#面向对象分析" class="headerlink" title="面向对象分析"></a>面向对象分析</h4><p>分析的过程都是为了提取系统的需求</p>
+<ol>
+<li>获取领域知识</li>
+<li>定义系统功能(用例图)</li>
+<li>确定适合的类，建立类的静态模型(类图)</li>
+<li>描述对象的动态行为(状态图、协作图、时序图、活动图)</li>
+<li>验证</li>
+<li>给出基本的用户界面原型(整体结构的原型：主窗口的内容，窗口之间的导航等)</li>
+</ol>
+<h4 id="设计"><a href="#设计" class="headerlink" title="设计"></a>设计</h4><ol>
+<li>将分析所得的类划分为功能包，并从技术层面增加新包，建立包与包之间的通信联系</li>
+<li>表示并发需求并建模</li>
+<li>指出系统的输出的详细格式</li>
+<li>数据管理(建立类与表单的对应关系，对数据库的访问机制)</li>
+<li>异常处理</li>
+<li>分配类和构件(构件图、配置图)</li>
+</ol>
+<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><p>编写程序代码，包括反复的编译、链接、排错等，并遵守传统的编程准则</p>
+<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E5%8D%81%E4%BA%8C)_%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%96%B9%E6%B3%95%E5%AD%A6/" data-id="ckbmfz62x000zlgvf1dsd1tib" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-软件工程(六)_详细设计_结构化程序" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E5%85%AD)_%E8%AF%A6%E7%BB%86%E8%AE%BE%E8%AE%A1_%E7%BB%93%E6%9E%84%E5%8C%96%E7%A8%8B%E5%BA%8F/" class="article-date">
+  <time datetime="2020-06-19T15:57:00.000Z" itemprop="datePublished">2020-06-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E5%85%AD)_%E8%AF%A6%E7%BB%86%E8%AE%BE%E8%AE%A1_%E7%BB%93%E6%9E%84%E5%8C%96%E7%A8%8B%E5%BA%8F/">软件工程(六)_详细设计_结构化程序</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <hr>
+<h3 id="结构化程序"><a href="#结构化程序" class="headerlink" title="结构化程序"></a>结构化程序</h3><p>经典定义：如果程序的代码块仅仅通过顺序、选择和循环这3种基本控制结构进行连接，并且每个代码块只有一个入口和一个出口，则称这个程序是结构化的</p>
+<p>广义的定义：结构程序设计是尽量少用GO TO语句的程序设计方法，最好仅仅在检测出错误时才使用GO TO语句，并且使用的是前向的GO TO语句</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E5%85%AD)_%E8%AF%A6%E7%BB%86%E8%AE%BE%E8%AE%A1_%E7%BB%93%E6%9E%84%E5%8C%96%E7%A8%8B%E5%BA%8F/" data-id="ckbmfz62y0011lgvf70lehqmb" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-软件工程(五)_总体设计_启发式规则" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%BA%94)_%E6%80%BB%E4%BD%93%E8%AE%BE%E8%AE%A1_%E5%90%AF%E5%8F%91%E5%BC%8F%E8%A7%84%E5%88%99/" class="article-date">
+  <time datetime="2020-06-19T15:57:00.000Z" itemprop="datePublished">2020-06-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%BA%94)_%E6%80%BB%E4%BD%93%E8%AE%BE%E8%AE%A1_%E5%90%AF%E5%8F%91%E5%BC%8F%E8%A7%84%E5%88%99/">软件工程(五)_总体设计_启发式规则</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <hr>
+<h3 id="软件设计的启发式规则"><a href="#软件设计的启发式规则" class="headerlink" title="软件设计的启发式规则"></a>软件设计的启发式规则</h3><ol>
+<li><p>改进软件结构提高模块独立性</p>
+<p>分析软件的结构，通过模块的分解和合并，力求降低耦合提高内聚</p>
+</li>
+<li><p>模块规模应该适中</p>
+<p>一个模块的规模最好内在一页纸内写完(大约60行代码左右)</p>
+</li>
+<li><p>深度、宽度、扇出和扇入都应该适当</p>
+<p>深度：软件结构中控制的层数，整个系统的属性</p>
+<p>宽度：软件结构内同一各层次上的模块总数的最大值，整个系统的属性</p>
+<p>扇出：一个模块直接控制的模块数，模块的属性</p>
+<p>扇入：一个模块有多少各直接上级模块调用。模块的属性</p>
+<p>扇出过大时，可以适当增加中间层的控制模块</p>
+<p>好的软件结构：顶层扇出比较高，中间层扇出较少，底层模块有高扇入</p>
+</li>
+<li><p>模块的作用域应该在控制域之内</p>
+<p>模块的作用域是指受到该模块内的一个判定影响的所有模块的集合</p>
+<p>模块的控制域是指模块本身及其所有直接后间接从属的模块的集合</p>
+<p>避免模块间的控制耦合</p>
+</li>
+<li><p>力争降低模块接口的复杂程度</p>
+<p>软件接口的复杂度往往时软件发生错误的主要原因，仔细设计模块接口，使得信息传递简单并且和模块的功能一致</p>
+</li>
+<li><p>设计单入口和单出口的模块</p>
+<p>避免模块间的内容耦合，便于后期维护</p>
+</li>
+<li><p>模块功能应该可以预测</p>
+<p>除附带内部存储器的模块，其他均可以比作一个黑盒子，相同的输入数据产生相同的输出结果，则称模块的功能可预测</p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%BA%94)_%E6%80%BB%E4%BD%93%E8%AE%BE%E8%AE%A1_%E5%90%AF%E5%8F%91%E5%BC%8F%E8%A7%84%E5%88%99/" data-id="ckbmfz62z0014lgvffza37oor" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Wikis/">Wikis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E8%B0%88/">杂谈</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Blogs/" rel="tag">Blogs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STAR%E6%B3%95%E5%88%99/" rel="tag">STAR法则</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" rel="tag">虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Blogs/" style="font-size: 10px;">Blogs</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/STAR%E6%B3%95%E5%88%99/" style="font-size: 10px;">STAR法则</a> <a href="/tags/git/" style="font-size: 20px;">git</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" style="font-size: 10px;">虚拟机</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%B8%89)_%E6%80%BB%E4%BD%93%E8%AE%BE%E8%AE%A1_%E9%AB%98%E5%86%85%E8%81%9A%E4%BD%8E%E8%80%A6%E5%90%88/">软件工程(三)_总体设计_高内聚低耦合</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%B8%80)_%E6%A6%82%E8%BF%B0/">软件工程(一)_概述</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%B9%9D)_%E8%AF%A6%E7%BB%86%E8%AE%BE%E8%AE%A1_%E7%A8%8B%E5%BA%8F%E5%A4%8D%E6%9D%82%E7%A8%8B%E5%BA%A6%E7%9A%84%E5%AE%9A%E9%87%8F%E5%BA%A6%E9%87%8F/">软件工程(九)_详细设计_程序复杂程度的定量度量</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%BA%8C)_%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/">软件工程(二)_需求分析</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%B8%83)_%E8%AF%A6%E7%BB%86%E8%AE%BE%E8%AE%A1_Jackson%E6%96%B9%E6%B3%95/">软件工程(七)_详细设计_Jackson方法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
 </aside>
-<div id="post" class="index">
-    <div class="pjax">
-        <article class="index">
-            <div class="toc-ref">
-    
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#欢迎来到我的博客"><span class="toc-text">欢迎来到我的博客</span></a></li></ol>
-    
-<style>
-    .left-col .switch-btn,
-    .left-col .switch-area {
-        display: none;
-    }
-    .toc-level-3 i,
-    .toc-level-3 ol {
-        display: none !important;
-    }
-</style>
-</div>
-            <h2 id="欢迎来到我的博客"><a href="#欢迎来到我的博客" class="headerlink" title="欢迎来到我的博客"></a>欢迎来到我的博客</h2><p>人生如逆旅，</p>
-<p>你我皆是逆行者。</p>
-<p>愿我的博客，</p>
-<p>能成为这段旅途上的，</p>
-<p>一簇小花。</p>
-<p>瞄一眼，</p>
-<p>采一朵，</p>
-<p>细数花瓣。</p>
-
-        </article>
         
-        
-    <div id="comments"></div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
-
-<script type="text/javascript">
-    $.getScript('/js/gitalk.js', function () {
-        var gitalk = new Gitalk({
-            clientID: '1e320c8190a3004b7f6e',
-            clientSecret: 'd9beff37e4f003fd48ec02d5a54cdda0ea05d4db',
-            repo: 'MajicGao.github.io',
-            owner: 'MajicGao',
-            admin: ['MajicGao'],
-            id: decodeURI(location.pathname),
-            distractionFreeMode: 'true',
-            language: 'zh-CN',
-            perPage: parseInt('10',10)
-        })
-        gitalk.render('comments')
-    })
-</script>
-
-
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 MajicGao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
-    <div class="copyright">
-        <p class="footer-entry">
-    ©2017-2021 MajicGao
-</p>
-<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
-
+  </div>
+</footer>
     </div>
-</div>
-<div class="full-toc">
-    <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
-<a class="" id="rocket" ></a>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
 
-</div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
 </body>
-<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
-
-<script src="/js/script.js?v=1.1.0" ></script>
-<script>
-    var img_resize = 'default';
-    function initArticle() {
-        /*渲染对应的表格样式*/
-        
-            $("#post .pjax table").addClass("green_title");
-        
-
-        /*渲染打赏样式*/
-        
-
-        /*高亮代码块行号*/
-        
-
-        /*访问数量*/
-        
-        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
-        
-
-        /*代码高亮，行号对齐*/
-        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
-
-        
-        
-    }
-
-    /*打赏页面隐藏与展示*/
-    
-
-</script>
-
-<!--加入行号的高亮代码块样式-->
-
-<!--自定义样式设置-->
-<style>
-    
-    
-    .nav {
-        width: 542px;
-    }
-    .nav.fullscreen {
-        margin-left: -542px;
-    }
-    .nav-left {
-        width: 120px;
-    }
-    
-    
-    @media screen and (max-width: 1468px) {
-        .nav {
-            width: 492px;
-        }
-        .nav.fullscreen {
-            margin-left: -492px;
-        }
-        .nav-left {
-            width: 100px;
-        }
-    }
-    
-    
-    @media screen and (max-width: 1024px) {
-        .nav {
-            width: 492px;
-            margin-left: -492px
-        }
-        .nav.fullscreen {
-            margin-left: 0;
-        }
-    }
-    
-    @media screen and (max-width: 426px) {
-        .nav {
-            width: 100%;
-        }
-        .nav-left {
-            width: 100%;
-        }
-    }
-    
-    
-    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
-        color: #383636;
-    }
-    
-    
-    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
-        color: #5e5e5f;
-    }
-    
-    
-    .nav-right nav a.hover, #local-search-result a.hover{
-        background-color: #e2e0e0;
-    }
-    
-    
-
-    /*列表样式*/
-    
-
-    /* 背景图样式 */
-    
-    
-
-
-    /*引用块样式*/
-    
-
-    /*文章列表背景图*/
-    
-    .nav-right:before {
-        content: ' ';
-        display: block;
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        opacity: 0.3;
-        background: url("https://i.loli.net/2019/07/22/5d3521411f3f169375.png");
-        background-repeat: no-repeat;
-        background-position: 50% 0;
-        -ms-background-size: cover;
-        -o-background-size: cover;
-        -moz-background-size: cover;
-        -webkit-background-size: cover;
-        background-size: cover;
-    }
-    
-
-    
-</style>
-
-
-
-
-
-
-
 </html>
