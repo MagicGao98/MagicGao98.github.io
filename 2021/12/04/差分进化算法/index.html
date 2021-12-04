@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>软件工程(七)_详细设计_Jackson方法 | MajicGao&#39;s Blog</title>
-  <meta name="keywords" content="">
-  <meta name="description" content="软件工程(七)_详细设计_Jackson方法 | MajicGao&#39;s Blog">
+  <title>差分进化算法 | MajicGao&#39;s Blog</title>
+  <meta name="keywords" content=" 进化算法 ">
+  <meta name="description" content="差分进化算法 | MajicGao&#39;s Blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="启发式算法-差分进化算法(DE)差分进化算法是由 R. Storn 和 K. Price 为了求解 Chebyshev 多项式而提出的。 差分进化算法采用实数编码方式，其算法原理和遗传算法十分相似，进化流程与遗传算法相同：变异，交叉和选择。交叉和选择操作和遗传算法大体相同，但差分进化算法的核心思想就体现在变异操作，变异操作使用差分策略，即利用种群中个体间的差分向量对个体进行扰动，实现个体变异，有">
 <meta property="og:type" content="article">
@@ -482,9 +482,9 @@
 </aside>
 <div id="post">
     <div class="pjax">
-        <article id="post-软件工程(七)_详细设计_Jackson方法" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-差分进化算法" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">软件工程(七)_详细设计_Jackson方法</h1>
+        <h1 class="article-title">差分进化算法</h1>
     
     <div class="article-meta">
         
@@ -494,15 +494,22 @@
             <i class="iconfont icon-category"></i>
             
             
-            <a  data-rel="软件工程">软件工程</a>
+            <a  data-rel="启发式算法">启发式算法</a>
             
         </span>
         
         
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color5">进化算法</a>
+            
+        </span>
+        
     </div>
     <div class="article-meta">
         
-            Created At : <time class="date" title='Updated At: 2020-06-20 00:17:57'>2020-06-19 23:57</time>
+            Created At : <time class="date" title='Updated At: 2021-12-04 13:11:59'>2021-12-04 13:04</time>
         
     </div>
     <div class="article-meta">
@@ -524,7 +531,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Jackson-方法"><span class="toc-text">Jackson 方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Jackson-分析方法"><span class="toc-text">Jackson 分析方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Jackson-设计方法"><span class="toc-text">Jackson 设计方法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考资料"><span class="toc-text">参考资料</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#启发式算法-差分进化算法-DE"><span class="toc-text">启发式算法-差分进化算法(DE)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#改进"><span class="toc-text">改进</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -541,21 +548,80 @@
     <div class="article-entry" itemprop="articleBody">
       
         <hr>
-<h3 id="Jackson-方法"><a href="#Jackson-方法" class="headerlink" title="Jackson 方法"></a>Jackson 方法</h3><p>Jackson 方法定义了一组以数据结构为指导的映射</p>
-<p>Jackson 认为数据结构的元素之间只有三种逻辑关系：顺序、选择和重复，三种数据结构可以任意嵌套、组合形成复杂的体系结构。</p>
-<p>Jackson 方法从目标系统的输入、输出数据结构入手，映射出程序框架结构，再补充其他细节，就可以得到完整的描述程序结构的Jackson 图，Jackson 图关注的是数据的逻辑结构，而不关心数据的具体存在形式</p>
-<h4 id="Jackson-分析方法"><a href="#Jackson-分析方法" class="headerlink" title="Jackson 分析方法"></a>Jackson 分析方法</h4><p>面向数据流的分析方法</p>
-<p>主要思路：通过对要处理的复杂数据，绘制Jackson 图进行分析，再结合Jackson 图来描述复杂数据的数据结构，分析数据的内在逻辑</p>
-<h4 id="Jackson-设计方法"><a href="#Jackson-设计方法" class="headerlink" title="Jackson 设计方法"></a>Jackson 设计方法</h4><p>面向数据结构的设计方法</p>
-<p>Jackson 结构程序设计方法步骤：</p>
+<h2 id="启发式算法-差分进化算法-DE"><a href="#启发式算法-差分进化算法-DE" class="headerlink" title="启发式算法-差分进化算法(DE)"></a>启发式算法-差分进化算法(DE)</h2><p>差分进化算法是由 R. Storn 和 K. Price 为了求解 Chebyshev 多项式而提出的。</p>
+<p>差分进化算法采用实数编码方式，其算法原理和遗传算法十分相似，进化流程与遗传算法相同：变异，交叉和选择。交叉和选择操作和遗传算法大体相同，但差分进化算法的核心思想就体现在变异操作，变异操作使用差分策略，即利用种群中个体间的差分向量对个体进行扰动，实现个体变异，有效地利用了种群分布特征，提高算法搜索能力。</p>
+<p>目标函数：$$min,f(x_1, x_2, …, x_D)$$  约束项：$$x_j^L \le x_j \le x_j^U, j = 1, 2, …, D$$  其中D表示解空间维度</p>
+<p>算法流程：</p>
 <ol>
-<li>分析并确定输入输出数据的逻辑结构，并用Jackson 图描绘这些数据结构</li>
-<li>找出输入数据结构和输出数据结构中由对应关系的数据单元</li>
-<li>按一定规则由输入输出的数据结构导出程序结构</li>
-<li>列出所有操作与条件(包括分支条件和循环结束条件)，并把它们分配到程序结构图中对应的位置</li>
-<li>用伪码写出程序</li>
+<li>初始化种群。在满足约束项的前提下，随机产生：$$x_{j,i}(0)=x_{j,i}^L + rand(0,1)·(x_{j,i}^U - x_{j,i}^L)$$ </li>
+<li>变异操作。差分进化算法使用差分策略实现个体变异，常见的差分策略是水机选取种群中三个不同的个体，将其中两个个体的差向量放缩后与第三个个体进行向量合成：$$v_i(g+1)=x_{r1}(g)+F·(x_{r2}(g)-x_{r3}(g)), i\ne r_1 \ne r_2 \ne r_3$$  其中F为放缩因子，如果变异产生的新个体不满足约束项，那么将按初始化种群，随机产生一个。</li>
+<li>交叉操作。$$u_{j,i}(g+1)=\begin{cases}v_{j,i(g+1)},&amp;if,rand(0,1) \le CR\ or\ j=j_{rand} \ x_{j,i}(g),&amp;otherwise \end{cases}$$ 其中 CR为交叉概率，$$j_{rand}$$ 为[1,2,…,D]中的随机整数，即为需要交叉的点位。</li>
+<li>选择操作。使用贪婪策略选择下一代种群个体：$$x_i(g+1)=\begin{cases} u_i(g+1),&amp;if\ f(u_i(g+1))\le f(x_i(g)) \ x_i(g),&amp;otherwise \end{cases}$$ </li>
 </ol>
-<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p>[1] <a href="https://blog.csdn.net/lizhenyuan/article/details/4090104" target="_blank" rel="noopener">https://blog.csdn.net/lizhenyuan/article/details/4090104</a></p>
+<h3 id="改进"><a href="#改进" class="headerlink" title="改进"></a>改进</h3><p>差分进化算法主要涉及到种群规模NP, 放缩因子 F, 交叉概率CR 这3个控制参数，通常的做法是根据经验选取一组固定参数：种群规模$$NP\in[5D,10D]$$，缩放因子$$F\in [0.5, 1]$$，交叉概率$$CR\in[0.8,1]$$。</p>
+<ul>
+<li><p>控制参数的改进</p>
+<p>$$CR(g+1)=\frac{CR(0)-CR_{min}}{G_{max}}$$，$$F(g+1)=F(g)+\frac{F_{max}-F(0)}{G_{max}}$$ 其中$$G_{max}$$表示迭代次数</p>
+</li>
+<li><p>差分策略的改进</p>
+<table>
+<thead>
+<tr>
+<th>差分策略</th>
+<th>差分表达式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DE/rand/1/bin</td>
+<td>$$x_1+F(x_2+x_3)$$</td>
+</tr>
+<tr>
+<td>DE/rand/2/bin</td>
+<td>$$x_1+F(x_2+x_3-x_4-x_5)$$</td>
+</tr>
+<tr>
+<td>DE/best/1/bin</td>
+<td>$$x_b+F(x_2-x_3)$$</td>
+</tr>
+<tr>
+<td>DE/besr/2/bin</td>
+<td>$$x_b+F(x_2+x_3-x_4-x_5)$$</td>
+</tr>
+<tr>
+<td>DE/rand-to-best/bin</td>
+<td>$x_1+\lambda(x_b-x_1)+F(x_2-x_3)$</td>
+</tr>
+<tr>
+<td>DE/current-to-rand/bin</td>
+<td>$x_i+\lambda(x_1-x_i)+F(x_2-x_3)$</td>
+</tr>
+<tr>
+<td>DE/current-to-best/bin</td>
+<td>$x_i+\lambda(x_b-x_i)+F(x_1-x_2)$</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>选择策略的改进</p>
+<p>贪婪策略有利于加快算法的收敛速度，但会增加早熟风险</p>
+<p>随机选择策略：父代个体$x_p$，子代个体$x_0$，子代替代父代的概率为：$p=min\ (1,\frac{f(x_p)}{f(x_0)})$ ，表示父代的目标函数值比子代的大，则子代被选中，否则，按照$f(x_p)/f(x_0)$的概率选择子代</p>
+</li>
+<li><p>种群重构</p>
+<p>种群重构是将一收敛的种群通过外部作用在一定范围内重新分布个体的位置，增加种群的多样性。</p>
+<p>Blackwell 和 Branke 根据量子力学中电子的量子状态，提出在最优个体附近随机产生重构个体：</p>
+<p>$x_i=x_b+\frac{r·p_i}{\sqrt{\sum\limits_{i=1}^{NP}p_i}}$</p>
+<p>其中$p_i\sim N(0,1),r\sim U(0,r_{cloud})$，$r_{cloud}$为指定的粒子云半径</p>
+</li>
+<li><p>多种群差分进化</p>
+<p>使用多个种群执行进化搜索，即使单个种群出现多样性的上市，由于种群间存在差异，通过种群间的信息共享和交换，依然可以保证整个算法继续进化</p>
+<p>多种群差分：$v_{j,i,k}(g+1)=x_{j,i,a}(g)+F·(x_{j,i,b}(g)-x_{j,i,c}(g))$ 其中$k\ne a\ne b \ne c$表示不同的子种群</p>
+</li>
+<li><p>利用梯度信息进行局部搜索</p>
+<p>当种群的目标函数值不在下降时，利用当前最优点的梯度信息，加速种群向全局最优点移动：</p>
+<p>$x_b(g+1)=\begin{cases} u_b(g+1),&amp;if\ f(u_b(g+1))&lt;f(x_b(g+1)) \ x_b(g)-\alpha\nabla f(x_b)(g),&amp;otherwise \end{cases}$ </p>
+<p>当前种群中最优个体的梯度信息可以利用$[f(x_b(g))-f(x_b(g-1))][x_b(g)-x_b(g-1)]^{-1}$ 近似估计步长$\alpha\in(0,1]$，如果$x_b(g)-\alpha\nabla f(x_b)(g)\le f(x_b(g))$则加速过程结束，否则减少$\alpha$的值继续搜索。</p>
+</li>
+</ul>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>[1]杨启文, 蔡亮, 薛云灿. 差分进化算法综述[J]. 模式识别与人工智能, 2008, 21(4):506-513.</p>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 fgao3500@gmail.com </span>
@@ -565,12 +631,12 @@
 
 
 <div class="article_copyright">
-    <p><span class="copy-title">Title:</span>软件工程(七)_详细设计_Jackson方法</p>
+    <p><span class="copy-title">Title:</span>差分进化算法</p>
     
     <p><span class="copy-title">Author:</span><a  title="MajicGao">MajicGao</a></p>
-    <p><span class="copy-title">Created At:</span>2020-06-19, 23:57:00</p>
-    <p><span class="copy-title">Updated At:</span>2020-06-20, 00:17:57</p>
-    <span class="copy-title">Url:</span><a class="post-url" href="/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%B8%83)_%E8%AF%A6%E7%BB%86%E8%AE%BE%E8%AE%A1_Jackson%E6%96%B9%E6%B3%95/" title="软件工程(七)_详细设计_Jackson方法">http://yoursite.com/2020/06/19/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B(%E4%B8%83)_%E8%AF%A6%E7%BB%86%E8%AE%BE%E8%AE%A1_Jackson%E6%96%B9%E6%B3%95/</a>
+    <p><span class="copy-title">Created At:</span>2021-12-04, 13:04:00</p>
+    <p><span class="copy-title">Updated At:</span>2021-12-04, 13:11:59</p>
+    <span class="copy-title">Url:</span><a class="post-url" href="/2021/12/04/%E5%B7%AE%E5%88%86%E8%BF%9B%E5%8C%96%E7%AE%97%E6%B3%95/" title="差分进化算法">http://yoursite.com/2021/12/04/%E5%B7%AE%E5%88%86%E8%BF%9B%E5%8C%96%E7%AE%97%E6%B3%95/</a>
     <p>
         <span class="copy-title">Copyright:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">&#39;Attribution-non-commercial-shared in the same way 4.0&#39;</a> Reprint please keep the original link and author.
     </p>
